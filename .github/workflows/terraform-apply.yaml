@@ -33,10 +33,5 @@ jobs:
       run: terraform plan
 
     - name: Apply Terraform changes
-      if: success()
+      if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve
-
-    # Optionally you may want to include steps for destroying infrastructure
-    # - name: Destroy Terraform resources
-    #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    #   run: terraform destroy -auto-approve
