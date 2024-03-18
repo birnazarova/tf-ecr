@@ -33,7 +33,7 @@ jobs:
         fi
 
     - name: Initialize Terraform
-      if: steps.fmt_check.outputs.fmt_success == 'true'
+      # if: steps.fmt_check.outputs.fmt_success == 'true'
       run: terraform init
 
     - name: Plan Terraform changes
