@@ -1,0 +1,44 @@
+name: Terraform Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.8
+
+    - name: Terraform formatting
+      run: |
+        if terraform fmt -check; then
+          echo "Terraform files are formatted correctly."
+          echo "::set-output name=fmt_success::true"
+        else
+          echo "Terraform files are not formatted correctly."
+          echo "::set-output name=fmt_success::false"
+        fi
+
+    - name: Initialize Terraform
+      if: steps.fmt_check.outputs.fmt_success == 'true'
+      run: terraform init
+
+    - name: Plan Terraform changes
+      if: steps.fmt_check.outputs.fmt_success == 'true'
+      run: terraform plan
+
+    - name: Apply Terraform changes
+      if: steps.fmt_check.outputs.fmt_success == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve
+
+    # Optionally you may want to include steps for destroying infrastructure
+    # - name: Destroy Terraform resources
+    #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    #   run: terraform destroy -auto-approve
