@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket                  = "tf-state-ecr-aika"
+    bucket = "tf-state-ecr-aika"
     # dynamodb_table          = "tf-state-ecr-aika"
-    key                     = "tf-ecr"
-    region                  = "us-east-1"
+    key    = "tf-ecr"
+    region = "us-east-1"
     # shared_credentials_file = "~/.aws/credentials"
   }
 }
