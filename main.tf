@@ -1,7 +1,6 @@
 terraform {
   backend "s3" {
     bucket         = "tf-state-ecr-aika"
-    dynamodb_table = "state_lock"
     key            = "tf-ecr"
     region         = "us-east-1"
   }
